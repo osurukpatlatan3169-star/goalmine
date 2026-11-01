@@ -51,16 +51,16 @@
 
     <!-- Alt Navigasyon Sekmeleri -->
     <nav class="bg-gray-900 border-t border-gray-800 flex justify-around py-2">
-        <button onclick="switchTab('home')" class="flex flex-col items-center text-emerald-400">
+        <button onclick="switchTab('home')" class="flex flex-col items-center text-emerald-400 cursor-pointer">
             <span class="text-[10px]">Home</span>
         </button>
-        <button onclick="switchTab('matches')" class="flex flex-col items-center text-gray-400">
+        <button onclick="switchTab('matches')" class="flex flex-col items-center text-gray-400 cursor-pointer">
             <span class="text-[10px]">Matches</span>
         </button>
-        <button onclick="switchTab('stats')" class="flex flex-col items-center text-gray-400">
+        <button onclick="switchTab('stats')" class="flex flex-col items-center text-gray-400 cursor-pointer">
             <span class="text-[10px]">Stats</span>
         </button>
-        <button onclick="switchTab('account')" class="flex flex-col items-center text-gray-400">
+        <button onclick="switchTab('account')" class="flex flex-col items-center text-gray-400 cursor-pointer">
             <span class="text-[10px]">Account</span>
         </button>
     </nav>
@@ -76,19 +76,17 @@
             { homeTeam: { name: "St. Gallen" }, awayTeam: { name: "Lugano" } }
         ];
 
-        function renderTable(matches) {
+        function renderTable() {
             const tbody = document.getElementById('tableBody');
+            if (!tbody) return;
             tbody.innerHTML = "";
 
-            matches.forEach(match => {
-                const home = match.homeTeam.name;
-                const away = match.awayTeam.name;
-                
+            fallbackMatches.forEach(match => {
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-gray-800/50 border-b border-gray-800";
                 tr.innerHTML = `
-                    <td class="p-2 text-left font-medium text-gray-200 truncate max-w-[90px]">${home}</td>
-                    <td class="p-2 text-left font-medium text-gray-400 truncate max-w-[90px]">${away}</td>
+                    <td class="p-2 text-left font-medium text-gray-200 truncate max-w-[90px]">${match.homeTeam.name}</td>
+                    <td class="p-2 text-left font-medium text-gray-400 truncate max-w-[90px]">${match.awayTeam.name}</td>
                     <td class="p-1"><span class="bg-emerald-800 text-emerald-200 px-1 py-0.5 rounded text-[9px]">Over</span></td>
                     <td class="p-1"><span class="bg-orange-800 text-orange-200 px-1 py-0.5 rounded text-[9px]">Under</span></td>
                     <td class="p-1"><span class="bg-emerald-800 text-emerald-200 px-1 py-0.5 rounded text-[9px]">Over</span></td>
@@ -102,15 +100,18 @@
                 tbody.appendChild(tr);
             });
 
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('matchTable').classList.remove('hidden');
+            const loadingEl = document.getElementById('loading');
+            const tableEl = document.getElementById('matchTable');
+            if (loadingEl) loadingEl.style.display = 'none';
+            if (tableEl) tableEl.classList.remove('hidden');
         }
 
-        // Doğrudan takılmadan açılması için veriyi yüklüyoruz
-        renderTable(fallbackMatches);
+        window.onload = function() {
+            renderTable();
+        };
 
         function switchTab(tab) {
-            alert(tab.toUpperCase() sekmesi aktif.);
+            alert(tab.toUpperCase() + " sekmesi aktif.");
         }
     </script>
 </body>
